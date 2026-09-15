@@ -170,12 +170,12 @@ export default function Hero() {
             />
           </div>
 
-          {/* Gradient overlay */}
+          {/* Lightened gradient overlay */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(110deg, rgba(10,20,45,0.90) 0%, rgba(10,20,45,0.60) 48%, rgba(10,20,45,0.18) 100%)",
+                "linear-gradient(110deg, rgba(10,20,45,0.50) 0%, rgba(10,20,45,0.30) 48%, rgba(10,20,45,0.10) 100%)",
             }}
           />
         </div>
