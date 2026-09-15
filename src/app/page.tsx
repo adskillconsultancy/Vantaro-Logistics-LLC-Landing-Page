@@ -1,499 +1,407 @@
+"use client";
 import Image from "next/image";
+import { useState, useEffect, useCallback, useRef } from "react";
 
-/* ── Icon helpers (inline SVG to avoid extra deps) ─────────────── */
-function TruckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm10 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M1 1h13l2 8h5l1 5H1V1z" />
-    </svg>
-  );
-}
-function ShieldIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l7 4v5c0 5.25-3.5 9.74-7 11C5.5 20.74 2 16.25 2 11V6l10-4z" />
-    </svg>
-  );
-}
-function ClockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
-      <circle cx="12" cy="12" r="10" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-    </svg>
-  );
-}
-function MapPinIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-      <circle cx="12" cy="9" r="2.5" />
-    </svg>
-  );
-}
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-5 h-5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-function PhoneIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 5.98 5.98l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  );
-}
-function MailIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-5 h-5">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-      <polyline strokeLinecap="round" strokeLinejoin="round" points="22,6 12,13 2,6" />
-    </svg>
-  );
-}
-
-/* ── Data ───────────────────────────────────────────────────────── */
-const services = [
+/* ══════════════════════════════════════════════════════════════════
+   SLIDE DATA
+══════════════════════════════════════════════════════════════════ */
+const SLIDES = [
   {
-    icon: <TruckIcon />,
-    title: "Full Truckload (FTL)",
-    desc: "Dedicated truck capacity for large shipments. Your freight moves directly from origin to destination — faster, safer, and cost-effective.",
+    image: "/hero-bg.jpg",
+    eyebrow: "Wallington, NJ · Direct Freight Carrier",
+    headline: ["Reliable Freight.", "Professional Service.", "Delivered With Confidence."],
+    accent: "Delivered With Confidence.",
+    sub: "Vantaro Logistics LLC provides dependable local and regional freight transportation throughout New Jersey, New York City, Long Island, and the Northeast.",
   },
   {
-    icon: <ShieldIcon />,
-    title: "Secure Freight Handling",
-    desc: "Every load is handled with care and precision. We prioritize cargo security from pickup through final delivery.",
+    image: "/hero-slide2.jpg",
+    eyebrow: "Warehouse · Loading · Final-Mile Delivery",
+    headline: ["Freight Handled", "With Precision.", "Every Shipment."],
+    accent: "Every Shipment.",
+    sub: "From warehouse pickup to door delivery — we manage every step with care, communication, and a commitment to on-time performance.",
   },
   {
-    icon: <ClockIcon />,
-    title: "On-Time Delivery",
-    desc: "We operate on strict schedules so your supply chain never skips a beat. Reliability is our top promise.",
+    image: "/hero-slide3.jpg",
+    eyebrow: "24/7 Dedicated Logistics · Overnight & Expedited",
+    headline: ["On The Move.", "Day & Night.", "Always On Schedule."],
+    accent: "Always On Schedule.",
+    sub: "Dedicated expedited freight runs across the tri-state area and regional corridors, keeping your supply chain moving around the clock.",
   },
   {
-    icon: <MapPinIcon />,
-    title: "Nationwide Coverage",
-    desc: "Our network spans the entire country. Whether cross-country or regional, Vantaro gets your freight there.",
+    image: "/hero-slide4.jpg",
+    eyebrow: "NJ · NYC · Long Island · Northeast Region",
+    headline: ["Built For Scale.", "Ready To Grow.", "Freight Without Limits."],
+    accent: "Freight Without Limits.",
+    sub: "From local runs to regional freight corridors — Vantaro Logistics is built to grow with your business across New Jersey, New York, and beyond.",
+  },
+  {
+    image: "/hero-slide5.jpg",
+    eyebrow: "Warehouses · Distribution · B2B Freight",
+    headline: ["Your Freight.", "Our Responsibility.", "Every Time."],
+    accent: "Every Time.",
+    sub: "Serving warehouses, distributors, manufacturers, and brokers throughout the Northeast with professional, responsive, and reliable freight service.",
   },
 ];
 
-const stats = [
-  { value: "500+", label: "Loads Delivered" },
-  { value: "48", label: "States Covered" },
-  { value: "98%", label: "On-Time Rate" },
-  { value: "24/7", label: "Support Available" },
+const NAV_LINKS = [
+  { label: "Home",         href: "#home" },
+  { label: "Services",     href: "#services" },
+  { label: "Service Area", href: "#service-area" },
+  { label: "About",        href: "#about" },
+  { label: "Contact",      href: "#contact" },
 ];
 
-const whyUs = [
-  "No hidden fees — transparent flat-rate pricing",
-  "Real-time shipment tracking & updates",
-  "Experienced drivers with clean safety records",
-  "Flexible scheduling to fit your timeline",
-  "Dedicated account manager for every client",
-  "Fully insured freight for your peace of mind",
-];
+const DURATION = 6000; // ms per slide
 
-/* ── Page ───────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════
+   PAGE
+══════════════════════════════════════════════════════════════════ */
 export default function Home() {
+  const [current,  setCurrent]  = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
+  // textKey forces re-mount of text block → re-triggers CSS entrance animation
+  const [textKey,  setTextKey]  = useState(0);
+
+  const timerRef     = useRef<ReturnType<typeof setInterval> | null>(null);
+  const progRef      = useRef<ReturnType<typeof setInterval> | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+
+  /* ── Scroll → solid navbar ─── */
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  /* ── Synchronized Timer & Progress ─── */
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (progRef.current)  clearInterval(progRef.current);
+
+    setProgress(0);
+    startTimeRef.current = Date.now();
+
+    // Progress bar tick
+    progRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTimeRef.current;
+      const pct = Math.min((elapsed / DURATION) * 100, 100);
+      setProgress(pct);
+      if (pct >= 100 && progRef.current) clearInterval(progRef.current);
+    }, 30);
+
+    // Auto-advance
+    timerRef.current = setInterval(() => {
+      setCurrent(c => (c + 1) % SLIDES.length);
+      setTextKey(k => k + 1);
+      startTimeRef.current = Date.now();
+      setProgress(0);
+    }, DURATION);
+  }, []);
+
+  /* ── Manual slide navigation (restarts timer cleanly) ─── */
+  const goTo = useCallback((idx: number) => {
+    setCurrent(idx);
+    setTextKey(k => k + 1);
+    resetTimer();
+  }, [resetTimer]);
+
+  const next = useCallback(() => {
+    setCurrent(c => (c + 1) % SLIDES.length);
+    setTextKey(k => k + 1);
+    resetTimer();
+  }, [resetTimer]);
+
+  const back = useCallback(() => {
+    setCurrent(c => (c - 1 + SLIDES.length) % SLIDES.length);
+    setTextKey(k => k + 1);
+    resetTimer();
+  }, [resetTimer]);
+
+  /* ── Start autoplay on mount ─── */
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (progRef.current)  clearInterval(progRef.current);
+    };
+  }, [resetTimer]);
+
   return (
     <div className="min-h-screen flex flex-col font-sans">
 
-      {/* ── NAVBAR ─────────────────────────────────────────────── */}
+      {/* CSS keyframes — injected once */}
+      <style>{`
+        /* Background crossfade */
+        @keyframes slideIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideOut { from { opacity: 1; } to { opacity: 0; } }
+
+        /* Ken Burns — slow, smooth zoom + subtle drift */
+        @keyframes kenburns {
+          0%   { transform: scale(1.0)  translate(0%, 0%); }
+          100% { transform: scale(1.10) translate(-1.5%, -0.8%); }
+        }
+
+        /* Text entrance — staggered fade-up */
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(28px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-enter  { animation: slideIn  1.4s cubic-bezier(0.4,0,0.2,1) forwards; }
+        .slide-kb     { animation: kenburns 8s   cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+
+        .text-anim-0  { animation: fadeUp 0.8s 0.1s cubic-bezier(0.4,0,0.2,1) both; }
+        .text-anim-1  { animation: fadeUp 0.8s 0.3s cubic-bezier(0.4,0,0.2,1) both; }
+        .text-anim-2  { animation: fadeUp 0.8s 0.5s cubic-bezier(0.4,0,0.2,1) both; }
+        .text-anim-3  { animation: fadeUp 0.8s 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+      `}</style>
+
+      {/* ══════════════════════════════════════════════════════
+          NAVBAR
+      ══════════════════════════════════════════════════════ */}
       <header
-        style={{ backgroundColor: "#1B2D5B" }}
-        className="sticky top-0 z-50 shadow-lg"
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{
+          backgroundColor: scrolled ? "#1B2D5B" : "transparent",
+          boxShadow: scrolled ? "0 2px 24px rgba(0,0,0,0.3)" : "none",
+          transition: "background-color 0.4s ease, box-shadow 0.4s ease",
+        }}
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-white/30">
-              <Image src="/Logo.jpg" alt="Vantaro Logistics Logo" width={44} height={44} className="object-cover" />
+          <a href="#home" className="flex items-center gap-3 flex-shrink-0">
+            <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-white/30 shadow-md">
+              <Image src="/Logo.jpg" alt="Vantaro Logistics LLC" width={44} height={44} className="object-cover" />
             </div>
             <div className="leading-tight">
-              <p className="text-white font-bold text-base tracking-wide">Vantaro Logistics</p>
-              <p style={{ color: "#6B8FAE" }} className="text-xs font-medium tracking-widest uppercase">Direct Freight Solutions</p>
+              <p className="text-white font-extrabold text-lg tracking-widest">VANTARO</p>
+              <p className="text-[10px] font-bold tracking-[0.18em] uppercase" style={{ color: "#6B8FAE" }}>Logistics LLC</p>
             </div>
-          </div>
+          </a>
 
-          {/* Nav links */}
-          <nav className="hidden md:flex items-center gap-8">
-            {["Services", "About", "Why Us", "Contact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="text-white/80 hover:text-white text-sm font-medium transition-colors duration-200"
-              >
-                {item}
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {NAV_LINKS.map((l) => (
+              <a key={l.label} href={l.href}
+                className="text-white/85 hover:text-white text-sm font-semibold transition-colors duration-200 relative group">
+                {l.label}
+                <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] group-hover:w-full transition-all duration-300"
+                  style={{ backgroundColor: "#6B8FAE" }} />
               </a>
             ))}
           </nav>
 
           {/* CTA */}
-          <a
-            href="#contact"
-            style={{ backgroundColor: "#6B8FAE" }}
-            className="hidden md:inline-flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:opacity-90 transition-opacity duration-200"
-          >
-            Get a Quote
+          <a href="#contact"
+            className="hidden lg:inline-flex items-center gap-2 text-white text-sm font-bold px-6 py-2.5 rounded-full shadow-lg hover:scale-105 transition-transform duration-200"
+            style={{ backgroundColor: "#6B8FAE" }}>
+            Request a Quote
           </a>
+
+          {/* Hamburger */}
+          <button className="lg:hidden flex flex-col gap-1.5 p-2" onClick={() => setMenuOpen(!menuOpen)}>
+            <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          </button>
         </div>
+
+        {/* Mobile menu */}
+        {menuOpen && (
+          <div className="lg:hidden px-6 pb-6 pt-2 flex flex-col gap-4" style={{ backgroundColor: "#1B2D5B" }}>
+            {NAV_LINKS.map((l) => (
+              <a key={l.label} href={l.href} onClick={() => setMenuOpen(false)}
+                className="text-white/85 hover:text-white text-sm font-semibold py-1 border-b border-white/10">
+                {l.label}
+              </a>
+            ))}
+            <a href="#contact" onClick={() => setMenuOpen(false)}
+              className="mt-2 inline-flex justify-center text-white text-sm font-bold px-6 py-3 rounded-full"
+              style={{ backgroundColor: "#6B8FAE" }}>
+              Request a Quote
+            </a>
+          </div>
+        )}
       </header>
 
-      {/* ── HERO ───────────────────────────────────────────────── */}
-      <section
-        id="hero"
-        style={{
-          background: "linear-gradient(135deg, #1B2D5B 0%, #243970 55%, #1B2D5B 100%)",
-        }}
-        className="relative overflow-hidden py-28 px-6"
-      >
-        {/* Decorative circles */}
-        <div
-          style={{ backgroundColor: "#6B8FAE", opacity: 0.08 }}
-          className="absolute -top-24 -right-24 w-[500px] h-[500px] rounded-full pointer-events-none"
-        />
-        <div
-          style={{ backgroundColor: "#6B8FAE", opacity: 0.06 }}
-          className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full pointer-events-none"
-        />
+      {/* ══════════════════════════════════════════════════════
+          HERO SLIDER
+      ══════════════════════════════════════════════════════ */}
+      <section id="home" className="relative h-screen min-h-[620px] overflow-hidden">
 
-        <div className="relative max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-14">
-          {/* Text */}
-          <div className="flex-1 text-center lg:text-left">
-            <span
-              style={{ backgroundColor: "rgba(107,143,174,0.18)", color: "#8AAAC8" }}
-              className="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6"
-            >
-              Direct Freight Solutions
-            </span>
-            <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-              Moving Freight <br />
-              <span style={{ color: "#6B8FAE" }}>Smarter.</span> Faster. <br />
-              Safer.
-            </h1>
-            <p className="text-white/70 text-lg leading-relaxed max-w-xl mb-10">
-              Vantaro Logistics LLC delivers reliable nationwide freight solutions built on transparency, precision, and a commitment to on-time delivery every single time.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <a
-                href="#contact"
-                style={{ backgroundColor: "#6B8FAE" }}
-                className="inline-flex items-center justify-center gap-2 text-white font-bold px-8 py-4 rounded-full hover:opacity-90 transition-all duration-200 shadow-lg"
-              >
-                Get a Free Quote
-              </a>
-              <a
-                href="#services"
-                className="inline-flex items-center justify-center gap-2 text-white font-semibold px-8 py-4 rounded-full border border-white/30 hover:bg-white/10 transition-all duration-200"
-              >
-                Explore Services
-              </a>
-            </div>
-          </div>
-
-          {/* Logo card */}
-          <div className="flex-shrink-0 flex items-center justify-center">
-            <div
-              style={{ backgroundColor: "rgba(255,255,255,0.06)", borderColor: "rgba(255,255,255,0.15)" }}
-              className="border rounded-3xl p-10 backdrop-blur-sm"
-            >
-              <Image
-                src="/Logo.jpg"
-                alt="Vantaro Logistics LLC"
-                width={240}
-                height={240}
-                className="rounded-2xl object-contain drop-shadow-xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── STATS BAR ──────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#F4F6F9" }} className="py-12 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <p style={{ color: "#1B2D5B" }} className="text-4xl font-extrabold mb-1">{s.value}</p>
-              <p style={{ color: "#6B8FAE" }} className="text-sm font-semibold uppercase tracking-widest">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── SERVICES ───────────────────────────────────────────── */}
-      <section id="services" className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span
-              style={{ backgroundColor: "#E8ECF2", color: "#1B2D5B" }}
-              className="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
-            >
-              What We Do
-            </span>
-            <h2 style={{ color: "#1B2D5B" }} className="text-3xl sm:text-4xl font-extrabold mb-4">
-              Our Core Services
-            </h2>
-            <p style={{ color: "#8898AA" }} className="text-base max-w-xl mx-auto leading-relaxed">
-              From full truckload shipping to last-mile coordination, Vantaro provides end-to-end freight services you can depend on.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((svc) => (
-              <div
-                key={svc.title}
-                style={{ borderColor: "#E8ECF2" }}
-                className="group border rounded-2xl p-7 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div
-                  style={{ backgroundColor: "#E8ECF2", color: "#1B2D5B" }}
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 group-hover:bg-[#1B2D5B] group-hover:text-white transition-colors duration-300"
-                >
-                  {svc.icon}
-                </div>
-                <h3 style={{ color: "#1B2D5B" }} className="font-bold text-lg mb-3">{svc.title}</h3>
-                <p style={{ color: "#8898AA" }} className="text-sm leading-relaxed">{svc.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── ABOUT ──────────────────────────────────────────────── */}
-      <section
-        id="about"
-        style={{ backgroundColor: "#F4F6F9" }}
-        className="py-24 px-6"
-      >
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
-          {/* Image side */}
-          <div className="flex-shrink-0">
-            <div
-              style={{ backgroundColor: "#1B2D5B" }}
-              className="rounded-3xl p-10 shadow-2xl"
-            >
-              <Image
-                src="/Logo.jpg"
-                alt="About Vantaro"
-                width={280}
-                height={280}
-                className="rounded-2xl object-contain"
-              />
-            </div>
-          </div>
-
-          {/* Text side */}
-          <div className="flex-1">
-            <span
-              style={{ backgroundColor: "#E8ECF2", color: "#1B2D5B" }}
-              className="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-5"
-            >
-              About Us
-            </span>
-            <h2 style={{ color: "#1B2D5B" }} className="text-3xl sm:text-4xl font-extrabold mb-6 leading-tight">
-              Built on Trust. <br />
-              <span style={{ color: "#6B8FAE" }}>Driven by Results.</span>
-            </h2>
-            <p style={{ color: "#2D3748" }} className="text-base leading-relaxed mb-5">
-              Vantaro Logistics LLC is a direct freight carrier dedicated to connecting businesses with dependable, door-to-door shipping solutions. We operate with a customer-first mindset — every shipment is treated with the same urgency and care as our very first.
-            </p>
-            <p style={{ color: "#8898AA" }} className="text-sm leading-relaxed">
-              Founded with a mission to simplify freight logistics, we've grown into a trusted partner for businesses of all sizes. Our team of experienced drivers and logistics professionals ensures your cargo arrives on time, every time.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY CHOOSE US ──────────────────────────────────────── */}
-      <section id="why-us" className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span
-              style={{ backgroundColor: "#E8ECF2", color: "#1B2D5B" }}
-              className="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
-            >
-              Why Vantaro
-            </span>
-            <h2 style={{ color: "#1B2D5B" }} className="text-3xl sm:text-4xl font-extrabold mb-4">
-              Why Businesses Choose Us
-            </h2>
-            <p style={{ color: "#8898AA" }} className="text-base max-w-xl mx-auto">
-              We don't just move freight — we build partnerships built on consistency, transparency, and trust.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {whyUs.map((point) => (
-              <div
-                key={point}
-                style={{ backgroundColor: "#F4F6F9", borderColor: "#E8ECF2" }}
-                className="flex items-start gap-4 border rounded-xl p-5"
-              >
-                <span
-                  style={{ backgroundColor: "#1B2D5B", color: "white" }}
-                  className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
-                >
-                  <CheckIcon />
-                </span>
-                <p style={{ color: "#2D3748" }} className="text-sm font-medium leading-relaxed">{point}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA BANNER ─────────────────────────────────────────── */}
-      <section
-        style={{
-          background: "linear-gradient(135deg, #1B2D5B 0%, #243970 100%)",
-        }}
-        className="py-20 px-6"
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-white text-3xl sm:text-4xl font-extrabold mb-5">
-            Ready to Move Your Freight?
-          </h2>
-          <p className="text-white/70 text-base mb-10 max-w-xl mx-auto">
-            Get in touch today and receive a free, no-obligation freight quote. Our team is available 24/7 to help plan your next shipment.
-          </p>
-          <a
-            href="#contact"
-            style={{ backgroundColor: "#6B8FAE" }}
-            className="inline-flex items-center gap-2 text-white font-bold px-10 py-4 rounded-full hover:opacity-90 transition-opacity duration-200 shadow-xl text-lg"
+        {/* Slide layers — all rendered, only active is visible */}
+        {SLIDES.map((slide, i) => (
+          <div
+            key={i}
+            className="absolute inset-0"
+            style={{
+              zIndex: i === current ? 2 : 1,
+              opacity: i === current ? 1 : 0,
+              transition: "opacity 1.4s cubic-bezier(0.4,0,0.2,1)",
+            }}
           >
-            Request a Free Quote
-          </a>
-        </div>
-      </section>
-
-      {/* ── CONTACT ────────────────────────────────────────────── */}
-      <section id="contact" style={{ backgroundColor: "#F4F6F9" }} className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span
-              style={{ backgroundColor: "#E8ECF2", color: "#1B2D5B" }}
-              className="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+            {/* Ken Burns wrapper — keyed so animation restarts on each activation */}
+            <div
+              key={`kb-${current}-${i}`}
+              className="absolute inset-0"
+              style={{ animation: i === current ? "kenburns 8s cubic-bezier(0.25,0.46,0.45,0.94) forwards" : "none" }}
             >
-              Contact
-            </span>
-            <h2 style={{ color: "#1B2D5B" }} className="text-3xl sm:text-4xl font-extrabold mb-4">
-              Get in Touch
-            </h2>
-            <p style={{ color: "#8898AA" }} className="text-base max-w-lg mx-auto">
-              Have a shipment ready? Questions about our services? Reach out and our team will respond promptly.
+              <Image
+                src={slide.image}
+                alt={slide.headline.join(" ")}
+                fill
+                sizes="100vw"
+                className="object-cover object-center"
+                priority={true}
+              />
+            </div>
+
+            {/* Gradient overlay */}
+            <div className="absolute inset-0" style={{
+              background: "linear-gradient(110deg, rgba(10,20,45,0.90) 0%, rgba(10,20,45,0.60) 48%, rgba(10,20,45,0.18) 100%)"
+            }} />
+          </div>
+        ))}
+
+        {/* Slide text — keyed to textKey so it re-animates on every slide change */}
+        <div className="relative z-10 h-full flex flex-col justify-center px-6">
+          <div className="max-w-7xl mx-auto w-full pt-24 pb-32" key={textKey}>
+
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-5 text-anim-0">
+              <div className="w-10 h-[3px] rounded-full" style={{ backgroundColor: "#5BB8F5" }} />
+              <span className="text-xs font-bold tracking-[0.22em] uppercase" style={{ color: "#5BB8F5" }}>
+                {SLIDES[current].eyebrow}
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h1
+              className="text-white font-extrabold leading-[1.08] mb-6 text-anim-1"
+              style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)" }}
+            >
+              {SLIDES[current].headline.map((line, idx) =>
+                line === SLIDES[current].accent
+                  ? <span key={idx} style={{ color: "#5BB8F5" }}>{line}<br /></span>
+                  : <span key={idx}>{line}<br /></span>
+              )}
+            </h1>
+
+            {/* Sub */}
+            <p className="text-white/75 text-base lg:text-lg leading-relaxed mb-10 max-w-xl text-anim-2">
+              {SLIDES[current].sub}
             </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 text-anim-3">
+              <a href="#contact"
+                className="inline-flex items-center justify-center gap-2 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:scale-105 transition-transform duration-200 text-sm"
+                style={{ backgroundColor: "#6B8FAE" }}>
+                🚐 Request a Quote
+              </a>
+              <a href="#services"
+                className="inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-full border-2 hover:bg-white/10 transition-all duration-200 text-sm text-white"
+                style={{ borderColor: "rgba(255,255,255,0.4)" }}>
+                View Services
+              </a>
+              <a href="tel:2057239333"
+                className="inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-full border-2 hover:bg-white/10 transition-all duration-200 text-sm"
+                style={{ borderColor: "rgba(91,184,245,0.45)", color: "#5BB8F5" }}>
+                📞 Call Now
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Bottom bar: progress + dots + counter + arrows ── */}
+        <div
+          className="absolute bottom-0 left-0 right-0 z-20"
+        >
+          {/* Progress bar — full width at very bottom */}
+          <div className="w-full h-[3px] bg-white/10">
+            <div
+              className="h-full"
+              style={{
+                width: `${progress}%`,
+                backgroundColor: "#5BB8F5",
+                transition: "width 0.03s linear",
+              }}
+            />
           </div>
 
-          <div className="max-w-2xl mx-auto">
-            {/* Contact cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
-              <div
-                style={{ backgroundColor: "white", borderColor: "#E8ECF2" }}
-                className="border rounded-2xl p-6 flex items-center gap-4"
-              >
-                <span style={{ backgroundColor: "#1B2D5B", color: "white" }} className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <PhoneIcon />
-                </span>
-                <div>
-                  <p style={{ color: "#8898AA" }} className="text-xs font-semibold uppercase tracking-widest mb-1">Call Us</p>
-                  <p style={{ color: "#1B2D5B" }} className="font-bold text-base">+1 (555) 000-0000</p>
-                </div>
-              </div>
-              <div
-                style={{ backgroundColor: "white", borderColor: "#E8ECF2" }}
-                className="border rounded-2xl p-6 flex items-center gap-4"
-              >
-                <span style={{ backgroundColor: "#1B2D5B", color: "white" }} className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <MailIcon />
-                </span>
-                <div>
-                  <p style={{ color: "#8898AA" }} className="text-xs font-semibold uppercase tracking-widest mb-1">Email Us</p>
-                  <p style={{ color: "#1B2D5B" }} className="font-bold text-base">info@vantarologistics.com</p>
-                </div>
-              </div>
+          {/* Controls row */}
+          <div className="flex items-center justify-between px-8 py-5">
+
+            {/* Dots — left */}
+            <div className="flex items-center gap-3">
+              {SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Slide ${i + 1}`}
+                  style={{
+                    width: i === current ? 30 : 10,
+                    height: 10,
+                    borderRadius: 5,
+                    backgroundColor: i === current ? "#5BB8F5" : "rgba(255,255,255,0.30)",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "width 0.4s ease, background-color 0.4s ease",
+                  }}
+                />
+              ))}
             </div>
 
-            {/* Form */}
-            <form
-              style={{ backgroundColor: "white", borderColor: "#E8ECF2" }}
-              className="border rounded-2xl p-8 shadow-sm space-y-5"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label style={{ color: "#1B2D5B" }} className="block text-xs font-bold uppercase tracking-widest mb-2">Name</label>
-                  <input
-                    type="text"
-                    placeholder="John Smith"
-                    style={{ borderColor: "#E8ECF2", color: "#1B2D5B" }}
-                    className="w-full border rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#6B8FAE] placeholder:text-gray-400 bg-white"
-                  />
-                </div>
-                <div>
-                  <label style={{ color: "#1B2D5B" }} className="block text-xs font-bold uppercase tracking-widest mb-2">Email</label>
-                  <input
-                    type="email"
-                    placeholder="you@company.com"
-                    style={{ borderColor: "#E8ECF2", color: "#1B2D5B" }}
-                    className="w-full border rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#6B8FAE] placeholder:text-gray-400 bg-white"
-                  />
-                </div>
-              </div>
-              <div>
-                <label style={{ color: "#1B2D5B" }} className="block text-xs font-bold uppercase tracking-widest mb-2">Message</label>
-                <textarea
-                  rows={4}
-                  placeholder="Tell us about your shipment or ask us anything..."
-                  style={{ borderColor: "#E8ECF2", color: "#1B2D5B" }}
-                  className="w-full border rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#6B8FAE] placeholder:text-gray-400 bg-white resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                style={{ backgroundColor: "#1B2D5B" }}
-                className="w-full text-white font-bold py-4 rounded-xl hover:opacity-90 transition-opacity duration-200 text-sm tracking-wide"
-              >
-                Send Message
+            {/* Counter — center */}
+            <span className="text-white/40 text-xs font-semibold tracking-widest hidden sm:block">
+              {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
+            </span>
+
+            {/* Arrows — right */}
+            <div className="flex items-center gap-2">
+              <button onClick={back} aria-label="Previous"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:bg-white/15"
+                style={{ border: "1px solid rgba(255,255,255,0.30)" }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
-            </form>
+              <button onClick={next} aria-label="Next"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:bg-white/15"
+                style={{ border: "1px solid rgba(255,255,255,0.30)" }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
+        </div>
+
+        {/* Scroll hint — right side vertical */}
+        <div className="absolute right-6 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col items-center gap-2">
+          <span className="text-white/30 text-[9px] font-bold tracking-[0.2em] uppercase"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+            Scroll Down
+          </span>
+          <div className="w-px h-12 animate-pulse" style={{ backgroundColor: "rgba(91,184,245,0.3)" }} />
         </div>
       </section>
 
-      {/* ── FOOTER ─────────────────────────────────────────────── */}
-      <footer style={{ backgroundColor: "#121E3D" }} className="py-10 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full overflow-hidden border border-white/20">
-              <Image src="/Logo.jpg" alt="Vantaro" width={36} height={36} className="object-cover" />
-            </div>
-            <div>
-              <p className="text-white font-bold text-sm">Vantaro Logistics LLC</p>
-              <p style={{ color: "#6B8FAE" }} className="text-xs">Direct Freight Solutions</p>
-            </div>
-          </div>
-
-          <p style={{ color: "#8898AA" }} className="text-xs text-center">
-            © {new Date().getFullYear()} Vantaro Logistics LLC. All rights reserved.
-          </p>
-
-          <nav className="flex gap-6">
-            {["Services", "About", "Contact"].map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                style={{ color: "#6B8FAE" }}
-                className="text-xs font-medium hover:text-white transition-colors duration-200"
-              >
-                {link}
-              </a>
-            ))}
-          </nav>
-        </div>
-      </footer>
-
+      {/* ── Placeholder sections ─────────────────────────── */}
+      <section id="services"     className="py-32 bg-white flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Services section — coming next</p>
+      </section>
+      <section id="service-area" className="py-32 bg-[#F4F6F9] flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Service Area section — coming next</p>
+      </section>
+      <section id="about"        className="py-32 bg-white flex items-center justify-center">
+        <p className="text-gray-400 text-sm">About section — coming next</p>
+      </section>
+      <section id="contact"      className="py-32 bg-[#F4F6F9] flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Contact section — coming next</p>
+      </section>
     </div>
   );
 }
