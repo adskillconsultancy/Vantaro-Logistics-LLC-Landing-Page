@@ -56,6 +56,13 @@ export const SLIDES = [
     accent: "Maximum Scalability.",
     sub: "Connecting major logistics arteries across New Jersey, New York, and the greater Northeast region with dependable, high-capacity commercial freight solutions.",
   },
+  {
+    image: "/hero-slide8.jpg",
+    eyebrow: "I-95 North Corridor · Direct NYC Freight Gateway",
+    headline: ["Interstate Freight.", "Direct Access.", "Delivered With Precision."],
+    accent: "Delivered With Precision.",
+    sub: "Direct linehaul and expedited transport along the I-95 corridor into Manhattan and tri-state distribution hubs, keeping commercial freight moving on schedule.",
+  },
 ];
 
 const DURATION = 6000; // ms per slide
