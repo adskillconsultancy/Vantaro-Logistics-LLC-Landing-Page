@@ -1,26 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
+/* ─── Vantaro Brand Tokens ─────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary – Navy Blue (from the dark V shape & border) */
+  --brand-navy:        #1B2D5B;
+  --brand-navy-light:  #243970;
+  --brand-navy-dark:   #121E3D;
+
+  /* Secondary – Steel Blue (from the lighter V shape & "Logistics LLC") */
+  --brand-steel:       #6B8FAE;
+  --brand-steel-light: #8AAAC8;
+  --brand-steel-dark:  #4E7290;
+
+  /* Neutrals */
+  --brand-white:       #FFFFFF;
+  --brand-off-white:   #F4F6F9;
+  --brand-light-gray:  #E8ECF2;
+  --brand-mid-gray:    #8898AA;
+  --brand-dark-gray:   #2D3748;
+
+  /* Semantic aliases */
+  --background:        var(--brand-white);
+  --foreground:        var(--brand-navy);
+  --accent:            var(--brand-steel);
 }
 
+/* ─── Tailwind v4 theme extension ──────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-background:     var(--background);
+  --color-foreground:     var(--foreground);
+  --color-primary:        var(--brand-navy);
+  --color-primary-light:  var(--brand-navy-light);
+  --color-primary-dark:   var(--brand-navy-dark);
+  --color-secondary:      var(--brand-steel);
+  --color-secondary-light:var(--brand-steel-light);
+  --color-secondary-dark: var(--brand-steel-dark);
+  --color-off-white:      var(--brand-off-white);
+  --color-light-gray:     var(--brand-light-gray);
+  --color-mid-gray:       var(--brand-mid-gray);
+
+  /* Fonts */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ──────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Utility helpers ───────────────────────────────────────────── */
+.text-brand-navy   { color: var(--brand-navy); }
+.text-brand-steel  { color: var(--brand-steel); }
+.bg-brand-navy     { background-color: var(--brand-navy); }
+.bg-brand-steel    { background-color: var(--brand-steel); }
+.border-brand-navy { border-color: var(--brand-navy); }
