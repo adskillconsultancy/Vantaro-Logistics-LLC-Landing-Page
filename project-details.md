@@ -16,14 +16,13 @@ BRAND POSITIONING:
 Vantaro Logistics should look like a serious, dependable, growing transportation company—not a small gig-delivery website.
 
 The website should communicate:
-
-- Reliability
-- Professionalism
-- Fast communication
-- Safe freight handling
-- On-time pickup and delivery
-- Flexible transportation solutions
-- Long-term relationships with shippers, brokers, warehouses, distributors, and businesses
+•⁠ ⁠Reliability
+•⁠ ⁠Professionalism
+•⁠ ⁠Fast communication
+•⁠ ⁠Safe freight handling
+•⁠ ⁠On-time pickup and delivery
+•⁠ ⁠Flexible transportation solutions
+•⁠ ⁠Long-term relationships with shippers, brokers, warehouses, distributors, and businesses
 
 MAIN HEADLINE:
 Reliable Freight. Professional Service. Delivered With Confidence.
@@ -38,22 +37,22 @@ Partner With Vantaro
 
 SERVICES:
 
-1. Cargo Van Freight
-   Professional transportation for cargo that requires fast, flexible cargo-van capacity.
-2. Expedited Delivery
-   Time-sensitive freight transportation when businesses need shipments moved quickly.
-3. Local Delivery
-   Pickup and delivery throughout New Jersey, New York City, Long Island, and surrounding areas.
-4. Regional Freight
-   Transportation throughout the Northeast for freight requiring longer-distance delivery.
-5. Same-Day Delivery
-   Same-day transportation solutions when scheduling and capacity allow.
-6. Business-to-Business Delivery
-   Transportation for warehouses, wholesalers, distributors, manufacturers, retailers, contractors, and other commercial customers.
-7. Dedicated Routes
-   Recurring or scheduled transportation solutions for businesses that require dependable regular service.
-8. Final-Mile Delivery
-   Professional transportation from warehouses or distribution facilities to the final business or delivery destination.
+1.⁠ ⁠Cargo Van Freight
+Professional transportation for cargo that requires fast, flexible cargo-van capacity.
+2.⁠ ⁠Expedited Delivery
+Time-sensitive freight transportation when businesses need shipments moved quickly.
+3.⁠ ⁠Local Delivery
+Pickup and delivery throughout New Jersey, New York City, Long Island, and surrounding areas.
+4.⁠ ⁠Regional Freight
+Transportation throughout the Northeast for freight requiring longer-distance delivery.
+5.⁠ ⁠Same-Day Delivery
+Same-day transportation solutions when scheduling and capacity allow.
+6.⁠ ⁠Business-to-Business Delivery
+Transportation for warehouses, wholesalers, distributors, manufacturers, retailers, contractors, and other commercial customers.
+7.⁠ ⁠Dedicated Routes
+Recurring or scheduled transportation solutions for businesses that require dependable regular service.
+8.⁠ ⁠Final-Mile Delivery
+Professional transportation from warehouses or distribution facilities to the final business or delivery destination.
 
 ABOUT US SECTION:
 
@@ -63,14 +62,14 @@ Our goal is simple: communicate clearly, handle every shipment professionally, a
 
 WHY CHOOSE VANTARO LOGISTICS:
 
-- Professional and responsive communication
-- Local and regional transportation
-- Flexible cargo-van capacity
-- Expedited and time-sensitive delivery options
-- Business-focused freight service
-- Reliable pickup and delivery
-- Shipment updates and communication
-- Commitment to long-term customer relationships
+•⁠ ⁠Professional and responsive communication
+•⁠ ⁠Local and regional transportation
+•⁠ ⁠Flexible cargo-van capacity
+•⁠ ⁠Expedited and time-sensitive delivery options
+•⁠ ⁠Business-focused freight service
+•⁠ ⁠Reliable pickup and delivery
+•⁠ ⁠Shipment updates and communication
+•⁠ ⁠Commitment to long-term customer relationships
 
 SERVICE AREA SECTION:
 
@@ -124,12 +123,12 @@ Also include an option:
 
 WEBSITE PAGES:
 
-1. Home
-2. Services
-3. Service Area
-4. About Us
-5. Request a Quote
-6. Contact Us
+1.⁠ ⁠Home
+2.⁠ ⁠Services
+3.⁠ ⁠Service Area
+4.⁠ ⁠About Us
+5.⁠ ⁠Request a Quote
+6.⁠ ⁠Contact Us
 
 HOME PAGE STRUCTURE:
 
@@ -150,23 +149,21 @@ Use a clean, premium logistics-company design.
 I want the website to feel established, trustworthy, modern, and professional.
 
 Use:
-
-- Strong typography
-- Clean spacing
-- Professional freight/logistics photography
-- Cargo vans, highways, warehouses, pallets, and commercial freight imagery
-- Modern icons
-- Mobile-friendly responsive layout
-- Fast loading
-- Simple navigation
-- Strong call-to-action buttons
+•⁠ ⁠Strong typography
+•⁠ ⁠Clean spacing
+•⁠ ⁠Professional freight/logistics photography
+•⁠ ⁠Cargo vans, highways, warehouses, pallets, and commercial freight imagery
+•⁠ ⁠Modern icons
+•⁠ ⁠Mobile-friendly responsive layout
+•⁠ ⁠Fast loading
+•⁠ ⁠Simple navigation
+•⁠ ⁠Strong call-to-action buttons
 
 Avoid making the site look like:
-
-- A moving company
-- Food delivery
-- DoorDash/Uber-style gig delivery
-- A personal driver website
+•⁠ ⁠A moving company
+•⁠ ⁠Food delivery
+•⁠ ⁠DoorDash/Uber-style gig delivery
+•⁠ ⁠A personal driver website
 
 It should look like a legitimate B2B freight carrier and logistics company.
 
