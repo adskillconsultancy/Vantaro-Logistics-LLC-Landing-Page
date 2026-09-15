@@ -42,6 +42,20 @@ export const SLIDES = [
     accent: "Every Time.",
     sub: "Serving warehouses, distributors, manufacturers, and brokers throughout the Northeast with professional, responsive, and reliable freight service.",
   },
+  {
+    image: "/hero-slide6.jpg",
+    eyebrow: "Medium-Duty Box Trucks · Palletized Cargo",
+    headline: ["Expanded Capacity.", "Commercial Box Trucks.", "Ready To Deliver."],
+    accent: "Commercial Box Trucks.",
+    sub: "Equipped with medium-duty straight trucks and hydraulic liftgates for high-volume commercial freight, palletized shipments, and B2B distribution.",
+  },
+  {
+    image: "/hero-slide7.jpg",
+    eyebrow: "Full Regional Linehaul · Interstate Freight",
+    headline: ["Regional Freight.", "Northeast Corridors.", "Maximum Scalability."],
+    accent: "Maximum Scalability.",
+    sub: "Connecting major logistics arteries across New Jersey, New York, and the greater Northeast region with dependable, high-capacity commercial freight solutions.",
+  },
 ];
 
 const DURATION = 6000; // ms per slide
@@ -165,18 +179,19 @@ export default function Hero() {
               alt={slide.headline.join(" ")}
               fill
               sizes="100vw"
-              quality={95}
+              quality={100}
+              unoptimized={true}
               className="object-cover object-center"
-              priority={true}
+              priority={i === 0}
             />
           </div>
 
-          {/* Lightened gradient overlay */}
+          {/* Gradient overlay */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(110deg, rgba(10,20,45,0.50) 0%, rgba(10,20,45,0.30) 48%, rgba(10,20,45,0.10) 100%)",
+                "linear-gradient(110deg, rgba(10,20,45,0.70) 0%, rgba(10,20,45,0.45) 48%, rgba(10,20,45,0.18) 100%)",
             }}
           />
         </div>
