@@ -113,7 +113,7 @@ export default function Hero() {
   }, [resetTimer]);
 
   return (
-    <section id="home" className="relative h-screen min-h-[620px] overflow-hidden">
+    <section id="home" className="relative min-h-[100dvh] sm:h-screen sm:min-h-[620px] overflow-hidden flex flex-col justify-center">
       {/* CSS keyframes — scoped to hero slider */}
       <style>{`
         /* Background crossfade */
@@ -182,60 +182,60 @@ export default function Hero() {
       ))}
 
       {/* Slide text — keyed to textKey so it re-animates on every slide change */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6">
-        <div className="max-w-7xl mx-auto w-full pt-24 pb-32" key={textKey}>
+      <div className="relative z-10 w-full flex flex-col justify-center px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto w-full pt-20 sm:pt-24 pb-24 sm:pb-32" key={textKey}>
           {/* Eyebrow */}
-          <div className="flex items-center gap-3 mb-5 text-anim-0">
-            <div className="w-10 h-[3px] rounded-full" style={{ backgroundColor: "#5BB8F5" }} />
-            <span className="text-xs font-bold tracking-[0.22em] uppercase" style={{ color: "#5BB8F5" }}>
+          <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5 text-anim-0">
+            <div className="w-8 sm:w-10 h-[3px] rounded-full" style={{ backgroundColor: "#5BB8F5" }} />
+            <span className="text-[11px] sm:text-xs font-bold tracking-[0.18em] sm:tracking-[0.22em] uppercase" style={{ color: "#5BB8F5" }}>
               {SLIDES[current].eyebrow}
             </span>
           </div>
 
           {/* Headline */}
           <h1
-            className="text-white font-extrabold leading-[1.08] mb-6 text-anim-1"
-            style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)" }}
+            className="text-white font-extrabold leading-[1.12] sm:leading-[1.08] mb-5 sm:mb-6 text-anim-1"
+            style={{ fontSize: "clamp(1.85rem, 5.2vw, 3.8rem)" }}
           >
             {SLIDES[current].headline.map((line, idx) =>
               line === SLIDES[current].accent ? (
                 <span key={idx} style={{ color: "#5BB8F5" }}>
                   {line}
-                  <br />
+                  <br className="hidden sm:inline" />{" "}
                 </span>
               ) : (
                 <span key={idx}>
                   {line}
-                  <br />
+                  <br className="hidden sm:inline" />{" "}
                 </span>
               )
             )}
           </h1>
 
           {/* Sub */}
-          <p className="text-white/75 text-base lg:text-lg leading-relaxed mb-10 max-w-xl text-anim-2">
+          <p className="text-white/80 text-sm sm:text-base lg:text-lg leading-relaxed mb-8 sm:mb-10 max-w-xl text-anim-2">
             {SLIDES[current].sub}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 text-anim-3">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 text-anim-3">
             <a
               href="#contact"
-              className="inline-flex items-center justify-center gap-2 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:scale-105 transition-transform duration-200 text-sm"
+              className="inline-flex items-center justify-center gap-2 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-transform duration-200 text-sm w-full sm:w-auto"
               style={{ backgroundColor: "#6B8FAE" }}
             >
               🚐 Request a Quote
             </a>
             <a
               href="#services"
-              className="inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-full border-2 hover:bg-white/10 transition-all duration-200 text-sm text-white"
+              className="inline-flex items-center justify-center gap-2 font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full border-2 hover:bg-white/10 active:scale-95 transition-all duration-200 text-sm text-white w-full sm:w-auto"
               style={{ borderColor: "rgba(255,255,255,0.4)" }}
             >
               View Services
             </a>
             <a
               href="tel:2057239333"
-              className="inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-full border-2 hover:bg-white/10 transition-all duration-200 text-sm"
+              className="inline-flex items-center justify-center gap-2 font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full border-2 hover:bg-white/10 active:scale-95 transition-all duration-200 text-sm w-full sm:w-auto"
               style={{ borderColor: "rgba(91,184,245,0.45)", color: "#5BB8F5" }}
             >
               📞 Call Now
@@ -259,18 +259,16 @@ export default function Hero() {
         </div>
 
         {/* Controls row */}
-        <div className="flex items-center justify-between px-8 py-5">
+        <div className="flex items-center justify-between px-4 sm:px-8 py-3 sm:py-5">
           {/* Dots — left */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {SLIDES.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
                 aria-label={`Slide ${i + 1}`}
+                className={i === current ? "w-5 sm:w-[30px] h-2 sm:h-2.5 rounded-full" : "w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full"}
                 style={{
-                  width: i === current ? 30 : 10,
-                  height: 10,
-                  borderRadius: 5,
                   backgroundColor: i === current ? "#5BB8F5" : "rgba(255,255,255,0.30)",
                   border: "none",
                   cursor: "pointer",
@@ -290,7 +288,7 @@ export default function Hero() {
             <button
               onClick={back}
               aria-label="Previous"
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:bg-white/15"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:bg-white/15 active:scale-95"
               style={{ border: "1px solid rgba(255,255,255,0.30)" }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
@@ -300,7 +298,7 @@ export default function Hero() {
             <button
               onClick={next}
               aria-label="Next"
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:bg-white/15"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white transition-all duration-200 hover:bg-white/15 active:scale-95"
               style={{ border: "1px solid rgba(255,255,255,0.30)" }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
