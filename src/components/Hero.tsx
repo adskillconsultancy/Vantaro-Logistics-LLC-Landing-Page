@@ -165,6 +165,7 @@ export default function Hero() {
               alt={slide.headline.join(" ")}
               fill
               sizes="100vw"
+              quality={95}
               className="object-cover object-center"
               priority={true}
             />
